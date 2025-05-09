@@ -6,7 +6,6 @@ const chatController = require('./controllers/chatController');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ Aplica CORS antes de qualquer rota
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST'],
@@ -15,7 +14,6 @@ app.use(cors({
 
 app.use(bodyParser.json());
 
-// ✅ Suas rotas
 app.post('/chat', chatController.handleChat);
 
 app.get('/', (req, res) => {

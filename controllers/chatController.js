@@ -1,17 +1,19 @@
 const axios = require('axios');
 const { validKeys } = require('../keys/validKeys');
+require('dotenv').config();
 
 exports.handleChat = async (req, res) => {
   console.log("📥 Dados recebidos no backend:", req.body);
 
-  const { messages, openai_key, plugin_key } = req.body;
+  const { messages, plugin_key, openai_key } = req.body;
+  const key = openai_key || process.env.OPENAI_API_KEY;
 
   if (!plugin_key || !validKeys.includes(plugin_key)) {
     return res.status(403).json({ error: 'Chave do plugin inválida ou ausente.' });
   }
 
-  if (!messages || !Array.isArray(messages) || !openai_key) {
-    return res.status(400).json({ error: 'Chave de API ou mensagens ausentes.' });
+  if (!messages || !Array.isArray(messages) || !key) {
+    return res.status(400).json({ error: 'Mensagens ou chave da OpenAI ausentes.' });
   }
 
   try {
@@ -19,11 +21,11 @@ exports.handleChat = async (req, res) => {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages,
+        messages,
       },
       {
         headers: {
-          Authorization: `Bearer ${openai_key}`,
+          Authorization: `Bearer ${key}`,
           'Content-Type': 'application/json',
         },
       }
