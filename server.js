@@ -1,3 +1,4 @@
+require('dotenv').config(); // garante que a chave seja lida mesmo se chamada ali
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
