@@ -1,4 +1,6 @@
 require('dotenv').config(); // garante que a chave seja lida mesmo se chamada ali
+console.log("🔑 OPENAI_API_KEY carregada:", process.env.OPENAI_API_KEY ? '✅ Sim' : '❌ Não encontrada');
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
