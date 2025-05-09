@@ -33,8 +33,12 @@ exports.handleChat = async (req, res) => {
 
     const reply = response.data.choices[0].message.content;
     res.json({ reply });
-  } catch (error) {
-    console.error(error.response?.data || error.message);
+    } catch (error) {
+    console.error("❌ Erro ao chamar OpenAI:");
+    console.error("Mensagem:", error.message);
+    console.error("Status:", error.response?.status);
+    console.error("Resposta:", error.response?.data);
     res.status(500).json({ error: 'Erro ao processar a mensagem.' });
   }
+
 };
