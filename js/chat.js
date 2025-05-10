@@ -81,22 +81,33 @@ fetch("https://web-production-e8469.up.railway.app/validar-chave", {
   function renderHistorico() {
   chatMessages.innerHTML = '';
 
-  // Texto inicial e aviso
+  // Verifica se textos vieram corretamente
+  const textoInicial = assistenteIA.textoInicial || 'Olá! Eu sou o Assistente IA.';
+  const textoApoio = assistenteIA.textoApoio || 'Sou um assistente automatizado.';
+  const textoRodape = assistenteIA.textoRodape || '';
+
+  // Adiciona mensagem inicial
   const divBoasVindas = document.createElement('div');
   divBoasVindas.className = 'mensagem assistente';
   divBoasVindas.innerHTML = `
-    <strong>Assistente:</strong> ${assistenteIA.textoInicial}
+    <strong>Assistente:</strong> ${textoInicial}
     <div style="margin: 10px 0 20px 0; padding: 0 10px;">
-      <strong><em>${assistenteIA.textoApoio}</em></strong>
+      <strong><em>${textoApoio}</em></strong>
     </div>
   `;
   chatMessages.appendChild(divBoasVindas);
 
-  // Histórico real
+  // Adiciona histórico
   historico.slice(1).forEach((msg) => {
     if (msg.role === "user") adicionarMensagem("Você", msg.content);
     else if (msg.role === "assistant") adicionarMensagem("Assistente", msg.content);
   });
+
+  // Adiciona rodapé (fixo no final do chat)
+  const divRodape = document.createElement('div');
+  divRodape.className = 'mensagem assistente';
+  divRodape.innerHTML = `<div style="padding: 12px; text-align: center; font-size: 11px; color: #777;">${textoRodape}</div>`;
+  chatMessages.appendChild(divRodape);
 
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
