@@ -79,19 +79,28 @@ fetch("https://web-production-e8469.up.railway.app/validar-chave", {
   sendButton.addEventListener("click", enviarMensagem);
 
   function renderHistorico() {
-    chatMessages.innerHTML = `
-      <div class="mensagem assistente">
-        <strong>Assistente:</strong> ${assistenteIA.textoInicial}
-        <div style="margin: 10px 0 20px 0; padding: 0 10px;">
-          <strong><em>${assistenteIA.textoApoio}</em></strong>
-        </div>
-      </div>
-    `;
-    historico.slice(1).forEach((msg) => {
-      if (msg.role === "user") adicionarMensagem("Você", msg.content);
-      else if (msg.role === "assistant") adicionarMensagem("Assistente", msg.content);
-    });
-  }
+  chatMessages.innerHTML = '';
+
+  // Texto inicial e aviso
+  const divBoasVindas = document.createElement('div');
+  divBoasVindas.className = 'mensagem assistente';
+  divBoasVindas.innerHTML = `
+    <strong>Assistente:</strong> ${assistenteIA.textoInicial}
+    <div style="margin: 10px 0 20px 0; padding: 0 10px;">
+      <strong><em>${assistenteIA.textoApoio}</em></strong>
+    </div>
+  `;
+  chatMessages.appendChild(divBoasVindas);
+
+  // Histórico real
+  historico.slice(1).forEach((msg) => {
+    if (msg.role === "user") adicionarMensagem("Você", msg.content);
+    else if (msg.role === "assistant") adicionarMensagem("Assistente", msg.content);
+  });
+
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
 
   async function enviarMensagem() {
     const mensagem = chatInput.value?.trim();
