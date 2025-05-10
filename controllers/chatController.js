@@ -3,6 +3,13 @@ const MAX_MESSAGES = 15;
 const axios = require('axios');
 const { validKeys } = require('../keys/validKeys');
 require('dotenv').config();
+const TEMAS_BLOQUEADOS = [
+  "curiosidades", "gatos", "celebridades", "história do mundo",
+  "como conquistar alguém", "fale sobre você", "me conte uma piada",
+  "curiosidade aleatória", "inteligência artificial", "openai", "chatgpt",
+  "conteúdo adulto", "conselho amoroso", "política", "religião"
+];
+
 
 const handleChat = async (req, res) => {
   console.log("📥 Dados recebidos no backend:", req.body);
@@ -26,6 +33,17 @@ const handleChat = async (req, res) => {
       error: "Limite de mensagens atingido. Faça upgrade para continuar.",
     });
   }
+const ultimaMensagem = messages[messages.length - 1]?.content?.toLowerCase() || "";
+
+const desviouDoNicho = TEMAS_BLOQUEADOS.some(termo =>
+  ultimaMensagem.includes(termo)
+);
+
+if (desviouDoNicho) {
+  return res.status(403).json({
+    error: "❌ Assunto fora do escopo permitido. Por favor, mantenha a conversa focada no tema do site.",
+  });
+}
 
   try {
     const response = await axios.post(
