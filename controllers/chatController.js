@@ -39,7 +39,6 @@ const handleChat = async (req, res) => {
   }
 const ultimaPergunta = messages[messages.length - 1]?.content?.toLowerCase() || "";
 const nicho = (req.body.nicho || "").toLowerCase();
-const nicho = (req.body.nicho || "").toLowerCase();
 console.log("🔎 Nicho recebido:", nicho);
 
 
