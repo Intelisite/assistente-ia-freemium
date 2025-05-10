@@ -3,12 +3,15 @@ const MAX_MESSAGES = 15;
 const axios = require('axios');
 const { validKeys } = require('../keys/validKeys');
 require('dotenv').config();
-const TEMAS_BLOQUEADOS = [
-  "curiosidades", "gatos", "celebridades", "história do mundo",
-  "como conquistar alguém", "fale sobre você", "me conte uma piada",
-  "curiosidade aleatória", "inteligência artificial", "openai", "chatgpt",
-  "conteúdo adulto", "conselho amoroso", "política", "religião"
+const termosBloqueados = [
+  "curiosidade", "curiosidades", "gato", "cachorro", "piada", "celebridade", "famoso",
+  "ator", "atriz", "filme", "série", "chatgpt", "quem é você", "conte uma história",
+  "me conte algo", "me diga algo engraçado", "me diga algo aleatório", "me fale do openai",
+  "me fale sobre você", "inteligência artificial", "diversão", "horóscopo", "signo",
+  "futebol", "jogo", "times", "placar", "notícia", "notícias", "politica", "religião",
+  "me fale de outra coisa", "conversa aleatória", "bate-papo", "curioso"
 ];
+
 
 
 const handleChat = async (req, res) => {
@@ -33,15 +36,13 @@ const handleChat = async (req, res) => {
       error: "Limite de mensagens atingido. Faça upgrade para continuar.",
     });
   }
-const ultimaMensagem = messages[messages.length - 1]?.content?.toLowerCase() || "";
+// 🔒 Bloqueia desvios do foco principal do site
+const ultimaPergunta = messages[messages.length - 1]?.content?.toLowerCase() || "";
+const desvioDetectado = termosBloqueados.some(termo => ultimaPergunta.includes(termo));
 
-const desviouDoNicho = TEMAS_BLOQUEADOS.some(termo =>
-  ultimaMensagem.includes(termo)
-);
-
-if (desviouDoNicho) {
+if (desvioDetectado) {
   return res.status(403).json({
-    error: "❌ Assunto fora do escopo permitido. Por favor, mantenha a conversa focada no tema do site.",
+    error: "🛑 Esta IA é voltada exclusivamente ao conteúdo deste site. Por favor, mantenha o foco no atendimento ou serviço oferecido."
   });
 }
 
