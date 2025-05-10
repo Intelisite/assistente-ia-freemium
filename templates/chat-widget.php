@@ -25,16 +25,3 @@
   </button>
 </div>
 
-<!-- Box de apoio -->
-<div style="background: #f0f8ff; padding: 20px; border-left: 5px solid #0073aa; margin-top: 30px; border-radius: 6px;">
-  <h2 style="margin-top: 0;">🙌 Curtiu o Assistente IA?</h2>
-  <p style="font-size: 15px; line-height: 1.6;">
-    Esse plugin foi criado com muito carinho para ajudar pequenos negócios a oferecerem um atendimento inteligente, rápido e com personalidade.
-  </p>
-  <p style="font-size: 15px; line-height: 1.6;">
-    Se ele está te ajudando, você pode apoiar o projeto com qualquer valor. Isso me incentiva a continuar melhorando e mantendo tudo funcionando ❤️
-  </p>
-  <a href="https://seulink.com.br/doar" target="_blank" style="display: inline-block; margin-top: 10px; background-color: #0073aa; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none;">
-    💙 Fazer uma Doação
-  </a>
-</div>
