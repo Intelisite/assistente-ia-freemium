@@ -9,11 +9,9 @@ const chatController = require('./controllers/chatController');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(cors()); // Libera todas as origens, métodos e headers
+app.options('*', cors()); // Garante suporte ao preflight CORS
+
 
 app.use(bodyParser.json());
 
