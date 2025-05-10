@@ -59,3 +59,14 @@ if (sessionLimits[clientIP] > MAX_MESSAGES) {
   }
 
 };
+const validKeys = require('../keys/validKeys');
+
+exports.validarChavePlugin = (req, res) => {
+  const { plugin_key } = req.body;
+
+  if (!plugin_key || !validKeys.includes(plugin_key)) {
+    return res.json({ pro: false });
+  }
+
+  res.json({ pro: true });
+};
