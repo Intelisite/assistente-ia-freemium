@@ -39,6 +39,9 @@ const handleChat = async (req, res) => {
   }
 const ultimaPergunta = messages[messages.length - 1]?.content?.toLowerCase() || "";
 const nicho = (req.body.nicho || "").toLowerCase();
+const nicho = (req.body.nicho || "").toLowerCase();
+console.log("🔎 Nicho recebido:", nicho);
+
 
 // 🔍 Verifica se a pergunta desvia do nicho e não está relacionada
 const desvioDetectado = termosBloqueados.some(termo =>
