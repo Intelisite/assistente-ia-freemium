@@ -1,3 +1,5 @@
+const sessionLimits = {};
+const MAX_MESSAGES = 15;
 const axios = require('axios');
 const { validKeys } = require('../keys/validKeys');
 require('dotenv').config();
@@ -15,6 +17,21 @@ exports.handleChat = async (req, res) => {
   if (!messages || !Array.isArray(messages) || !key) {
     return res.status(400).json({ error: 'Mensagens ou chave da OpenAI ausentes.' });
   }
+  // Controle de sessões por IP (ou futuro ID de cliente)
+const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+if (!sessionLimits[clientIP]) {
+  sessionLimits[clientIP] = 1;
+} else {
+  sessionLimits[clientIP]++;
+}
+
+if (sessionLimits[clientIP] > MAX_MESSAGES) {
+  return res.status(403).json({
+    error: "Limite de mensagens atingido. Faça upgrade para continuar.",
+  });
+}
+
 
   try {
     const response = await axios.post(
