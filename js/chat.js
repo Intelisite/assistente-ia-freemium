@@ -6,6 +6,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatToggle = document.getElementById("chat-toggle");
   const chatClose = document.getElementById("chat-close");
   const sendButton = document.getElementById("enviar");
+  
+  let planoPro = false;
+
+fetch("https://web-production-e8469.up.railway.app/validar-chave", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ plugin_key: "freemium-teste-123" }) // depois trocamos para dinâmico
+})
+  .then(res => res.json())
+  .then(data => {
+    planoPro = data.pro;
+    console.log("🔐 Plano Pro:", planoPro);
+  })
+  .catch(() => {
+    console.warn("⚠️ Falha ao validar chave do plugin");
+  });
+
 
   // Estiliza dinamicamente
   chatToggle.style.backgroundColor = assistenteIA.corBotao;
@@ -112,6 +129,24 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (dados.error) {
         adicionarMensagem("Assistente", `❌ ${dados.error}`);
       }
+	  if (reply.includes("Limite de mensagens atingido")) {
+  const divUpgrade = document.createElement("div");
+  divUpgrade.className = "mensagem assistente";
+  divUpgrade.innerHTML = `
+    <div style="background: #fff3cd; padding: 15px; border: 1px solid #ffeeba; border-radius: 6px; margin-top: 15px;">
+      <strong>⚠️ Upgrade necessário</strong>
+      <p style="margin: 10px 0;">Você atingiu o limite de mensagens gratuitas.</p>
+      <a href="https://intelisite.io/pro" target="_blank" style="display: inline-block; background: #ffc107; color: black; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+        🔓 Desbloquear versão Pro
+      </a>
+    </div>
+  `;
+  chatMessages.appendChild(divUpgrade);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatInput.disabled = true;
+  sendButton.disabled = true;
+}
+
     } catch (error) {
       console.error("Erro ao enviar mensagem:", error);
       adicionarMensagem("Assistente", "Erro de conexão ou chave inválida.");
