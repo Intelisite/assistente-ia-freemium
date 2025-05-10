@@ -4,7 +4,7 @@ const axios = require('axios');
 const { validKeys } = require('../keys/validKeys');
 require('dotenv').config();
 
-exports.handleChat = async (req, res) => {
+const handleChat = async (req, res) => {
   console.log("📥 Dados recebidos no backend:", req.body);
 
   const { messages, plugin_key, openai_key } = req.body;
@@ -17,21 +17,15 @@ exports.handleChat = async (req, res) => {
   if (!messages || !Array.isArray(messages) || !key) {
     return res.status(400).json({ error: 'Mensagens ou chave da OpenAI ausentes.' });
   }
-  // Controle de sessões por IP (ou futuro ID de cliente)
-const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-if (!sessionLimits[clientIP]) {
-  sessionLimits[clientIP] = 1;
-} else {
-  sessionLimits[clientIP]++;
-}
+  const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  sessionLimits[clientIP] = (sessionLimits[clientIP] || 0) + 1;
 
-if (sessionLimits[clientIP] > MAX_MESSAGES) {
-  return res.status(403).json({
-    error: "Limite de mensagens atingido. Faça upgrade para continuar.",
-  });
-}
-
+  if (sessionLimits[clientIP] > MAX_MESSAGES) {
+    return res.status(403).json({
+      error: "Limite de mensagens atingido. Faça upgrade para continuar.",
+    });
+  }
 
   try {
     const response = await axios.post(
@@ -50,23 +44,19 @@ if (sessionLimits[clientIP] > MAX_MESSAGES) {
 
     const reply = response.data.choices[0].message.content;
     res.json({ reply });
-    } catch (error) {
+  } catch (error) {
     console.error("❌ Erro ao chamar OpenAI:");
     console.error("Mensagem:", error.message);
     console.error("Status:", error.response?.status);
     console.error("Resposta:", error.response?.data);
     res.status(500).json({ error: 'Erro ao processar a mensagem.' });
   }
-
 };
-const validKeys = require('../keys/validKeys');
 
-exports.validarChavePlugin = (req, res) => {
+const validarChavePlugin = (req, res) => {
   const { plugin_key } = req.body;
-
-  if (!plugin_key || !validKeys.includes(plugin_key)) {
-    return res.json({ pro: false });
-  }
-
-  res.json({ pro: true });
+  const chaveValida = plugin_key && validKeys.includes(plugin_key);
+  res.json({ pro: chaveValida });
 };
+
+module.exports = { handleChat, validarChavePlugin };
