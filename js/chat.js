@@ -140,7 +140,7 @@ fetch("https://web-production-e8469.up.railway.app/validar-chave", {
       } else if (dados.error) {
         adicionarMensagem("Assistente", `❌ ${dados.error}`);
       }
-	  if (reply.includes("Limite de mensagens atingido")) {
+	  if (dados.reply && dados.reply.includes("Limite de mensagens atingido")) {
   const divUpgrade = document.createElement("div");
   divUpgrade.className = "mensagem assistente";
   divUpgrade.innerHTML = `
