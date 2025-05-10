@@ -128,6 +128,7 @@ fetch("https://web-production-e8469.up.railway.app/validar-chave", {
           model: "gpt-3.5-turbo",
           openai_key: assistenteIA.openaiKey,
           plugin_key: assistenteIA.pluginKey
+		  nicho: assistenteIA.nicho
         })
       });
 
