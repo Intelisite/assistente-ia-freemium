@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 fetch("https://web-production-e8469.up.railway.app/validar-chave", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ plugin_key: "freemium-teste-123" }) // depois trocamos para dinâmico
+  body: JSON.stringify({ plugin_key: assistenteIA.pluginKey })
 })
   .then(res => res.json())
   .then(data => {
@@ -127,7 +127,7 @@ fetch("https://web-production-e8469.up.railway.app/validar-chave", {
           messages: historico,
           model: "gpt-3.5-turbo",
           openai_key: assistenteIA.openaiKey,
-          plugin_key: "freemium-teste-123"
+          plugin_key: assistenteIA.pluginKey
         })
       });
 
