@@ -3,17 +3,6 @@ const MAX_MESSAGES = 15;
 const axios = require('axios');
 const { validKeys } = require('../keys/validKeys');
 require('dotenv').config();
-const termosBloqueados = [
-  "curiosidade", "curiosidades", "gato", "cachorro", "piada", "celebridade", "famoso",
-  "ator", "atriz", "filme", "série", "chatgpt", "quem é você", "conte uma história",
-  "me conte algo", "me diga algo engraçado", "me diga algo aleatório", "me fale do openai",
-  "me fale sobre você", "inteligência artificial", "diversão", "horóscopo", "signo",
-  "futebol", "jogo", "times", "placar", "notícia", "notícias", "política", "religião",
-  "me fale de outra coisa", "conversa aleatória", "bate-papo", "curioso"
-];
-
-
-
 
 const handleChat = async (req, res) => {
   console.log("📥 Dados recebidos no backend:", req.body);
@@ -37,22 +26,6 @@ const handleChat = async (req, res) => {
       error: "Limite de mensagens atingido. Faça upgrade para continuar.",
     });
   }
-const ultimaPergunta = messages[messages.length - 1]?.content?.toLowerCase() || "";
-const nicho = (req.body.nicho || "").toLowerCase();
-console.log("🔎 Nicho recebido:", nicho);
-
-
-// 🔍 Verifica se a pergunta desvia do nicho e não está relacionada
-const desvioDetectado = termosBloqueados.some(termo =>
-  ultimaPergunta.includes(termo) &&
-  !ultimaPergunta.includes(nicho)
-);
-
-if (desvioDetectado) {
-  return res.status(403).json({
-    error: "🛑 Esta IA é voltada exclusivamente ao conteúdo do site. Por favor, mantenha o foco no atendimento ou serviço oferecido."
-  });
-}
 
   try {
     const response = await axios.post(
