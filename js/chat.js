@@ -35,12 +35,15 @@ fetch("https://web-production-e8469.up.railway.app/validar-chave", {
   chatInput.placeholder = assistenteIA.placeholder;
 
   // Instruções base
-  let historico = [
-    {
-      role: "system",
-      content: `Nicho: ${assistenteIA.nicho || 'geral'}. Instruções adicionais: ${(assistenteIA.instrucao || 'nenhuma instrução').replace(/\n/g, ' ').replace(/"/g, "'")}`
-    }
-  ];
+let historico = [
+  {
+    role: "system",
+    content: `Você é um assistente de um site sobre "${assistenteIA.nicho}".
+Somente responda perguntas relacionadas a esse tema principal.
+Recuse com gentileza qualquer pergunta que fuja desse assunto.
+Instruções adicionais do cliente: ${(assistenteIA.instrucao || 'nenhuma instrução').replace(/\n/g, ' ').replace(/"/g, "'")}`
+  }
+];
 
   // Limite freemium
   let mensagensEnviadas = 0;
